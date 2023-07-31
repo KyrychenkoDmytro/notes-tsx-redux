@@ -1,6 +1,6 @@
 import { FC } from "react";
-import SummaryThead from "../../components/SummaryThead/SummaryThead";
-import SummaryTbody from "../../components/SummaryTbody/SummaryTbody";
+import SummaryThead from "../../components/Summary/SummaryThead/SummaryThead";
+import SummaryTbody from "../../components/Summary/SummaryTbody/SummaryTbody";
 
 const SummaryNotesTable: FC = () => {
     return (

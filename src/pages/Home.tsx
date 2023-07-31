@@ -13,7 +13,7 @@ const Home: FC = () => {
 
     useEffect(() => {
         dispatch(fetchNotes());
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className="Home">
