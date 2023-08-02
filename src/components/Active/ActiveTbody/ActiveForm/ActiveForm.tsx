@@ -1,14 +1,15 @@
 import { useAppSelector, useAppDispatch } from "../../../../hooks/reduxHooks";
-import { createOneNote, toggleFormState } from "../../../../redux/reducers/notesSlice";
-import { useState } from 'react';
+import { createOneNote, toggleFormState, editOneNote } from "../../../../redux/reducers/notesSlice";
+import { useState, useEffect } from 'react';
 import { images } from "../../../../data/images";
 
 const ActiveForm = () => {
-    const { isActiveForm, nextId } = useAppSelector(state => state.notes);
-    const [name, setName] = useState('');
-    const [date, setDate] = useState('');
-    const [category, setCategory] = useState('Task');
-    const [content, setContent] = useState('');
+    const { isActiveForm, nextId, editableNote } = useAppSelector(state => state.notes);
+    const [name, setName] = useState(editableNote?.name || '');
+    const [date, setDate] = useState(editableNote?.created || '');
+    // const [dates, setDates] = useState(editableNote?.dates || ['']);
+    const [category, setCategory] = useState(editableNote?.category || 'Task');
+    const [content, setContent] = useState(editableNote?.content || '');
     const dispatch = useAppDispatch();
 
     const formatDate = (dateString: string) => {
@@ -19,35 +20,57 @@ const ActiveForm = () => {
         return `${year}-${month}-${day}`;
     };
 
+    const handleFormClose = () => {
+        if (editableNote) {
+            dispatch(createOneNote(editableNote));
+        }
+        dispatch(toggleFormState());
+        dispatch(editOneNote(Infinity));
+        setName('');
+        setDate('');
+        setCategory('Task');
+        setContent('');
+    }
+
+    // console.log(dates);
+
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newNote = {
-            id: nextId,
+            id: editableNote ? editableNote.id : nextId,
             imgUrl: images.filter((img) => img.imgName === category)[0]?.imgUrl || '',
             name,
             created: formatDate(date),
             category,
             content,
-            dates: '',
+            dates: editableNote ? editableNote.dates : '',
             archived: false,
         };
 
         dispatch(createOneNote(newNote));
         dispatch(toggleFormState());
+        dispatch(editOneNote(Infinity));
         setName('');
         setDate('');
         setCategory('Task');
         setContent('');
     };
 
-    const handleFormClose = () => {
-        dispatch(toggleFormState());
-        setName('');
-        setDate('');
-        setCategory('Task');
-        setContent('');
-    }
+    useEffect(() => {
+        if (editableNote) {
+            setName(editableNote.name);
+            setDate(formatDate(editableNote.created));
+            setCategory(editableNote.category);
+            setContent(editableNote.content);
+            // let datesArray = editableNote.dates.split(', ');
+            // let newDatesFormat: string[] = [];
+            // if(datesArray.length > 0) {
+            //     newDatesFormat = datesArray.map(item=> formatDate(item))
+            // }
+            // setDates([...newDatesFormat, formatDate(editableNote.created)]);
+        }
+    }, [editableNote]);
 
     return (
         <>
@@ -97,46 +120,6 @@ const ActiveForm = () => {
                 </tr>
             )}
         </>
-    );
-
-
-
-
-    // return (
-    // note
-    //     ? `<tr class="ActiveNotesTable__body-row notes-form">
-    //       <td class="ActiveNotesTable__body-form" colspan="6">
-    //           <form id="noteForm">
-    //               <input class="ActiveNotesTable__body-form-name" type="text" value="${note?.name}" placeholder="Name" required>
-    //               <input class="ActiveNotesTable__body-form-date" type="date" value="${formatDate(note?.created)}" required>
-    //               <select class="ActiveNotesTable__body-form-category" name="category">
-    //                   <option value="Task" ${note?.category === "Task" ? "selected" : ""}>Task</option>
-    //                   <option value="Random Thought" ${note?.category === "Random Thought" ? "selected" : ""}>Random Thought</option>
-    //                   <option value="Idea" ${note?.category === "Idea" ? "selected" : ""}>Idea</option>
-    //               </select>
-    //               <textarea class="ActiveNotesTable__body-form-text" name="Content" maxlength="100" cols="30" rows="2" placeholder="Content" required>${note?.content}</textarea>
-    //               <button class="ActiveNotesTable__body-form-submit" id="submitNote" type="submit">Add Note</button>
-    //               <button class="ActiveNotesTable__body-form-close" id="closeForm">x</button>
-    //           </form>
-    //       </td>
-    //   </tr>`
-    //     : `<tr class="ActiveNotesTable__body-row notes-form">
-    //       <td class="ActiveNotesTable__body-form" colspan="6">
-    //           <form id="noteForm">
-    //               <input class="ActiveNotesTable__body-form-name" type="text" value="" placeholder="Name" required>
-    //               <input class="ActiveNotesTable__body-form-date" type="date" required>
-    //               <select class="ActiveNotesTable__body-form-category" name="category">
-    //                   <option value="Task">Task</option>
-    //                   <option value="Random Thought">Random Thought</option>
-    //                   <option value="Idea">Idea</option>
-    //               </select>
-    //               <textarea class="ActiveNotesTable__body-form-text" name="Content" maxlength="100" cols="30" rows="2" placeholder="Content" required></textarea>
-    //               <button class="ActiveNotesTable__body-form-submit" id="submitNote" type="submit">Add Note</button>
-    //               <button class="ActiveNotesTable__body-form-close" id="closeForm">x</button>
-    //           </form>
-    //       </td>
-    //   </tr>`
-    // );
-};
-
+    )
+}
 export default ActiveForm;

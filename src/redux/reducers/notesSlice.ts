@@ -23,7 +23,7 @@ const calcCategoryCounts = (state: NotesSliceState) => {
 }
 
 const findNextId = (state: NotesSliceState) => {
-    state.nextId = state.data.reduce((accum, item) => (accum < item.id ? (accum = item.id) : accum) + 1, 0)
+    state.nextId = state.data.reduce((accum, item) => (accum < item.id ? (accum = item.id) : accum), 0) + 1;
 }
 
 interface NotesSliceState {
@@ -32,6 +32,7 @@ interface NotesSliceState {
     categoryCounts: NumberOfNotesByCategory;
     isActiveForm: boolean;
     nextId: number;
+    editableNote: Note | null;
 }
 
 const initialState: NotesSliceState = {
@@ -39,7 +40,8 @@ const initialState: NotesSliceState = {
     activeNotes: [],
     categoryCounts: {},
     isActiveForm: false,
-    nextId: 0
+    nextId: 0,
+    editableNote: null,
 }
 
 export const notesSlice = createSlice({
@@ -93,12 +95,20 @@ export const notesSlice = createSlice({
             getActiveNotes(state);
             calcCategoryCounts(state);
         },
+        editOneNote: (state, action: PayloadAction<number>) => {
+            const note = state.data.find((note) => note.id === action.payload);
+            if (note) {
+                state.editableNote = note;
+            } else {
+                state.editableNote = null;
+            }
+        },
         toggleFormState: (state) => {
             state.isActiveForm = !state.isActiveForm;
         }
     }
 })
 
-export const { setNotes, deleteAllNotes, archiveAllNotes, createOneNote, deleteOneNote, archiveOneNote, toggleFormState } = notesSlice.actions;
+export const { setNotes, deleteAllNotes, archiveAllNotes, createOneNote, deleteOneNote, archiveOneNote, toggleFormState, editOneNote } = notesSlice.actions;
 
 export default notesSlice.reducer;
