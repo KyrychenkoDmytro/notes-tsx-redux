@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/notes-tsx-redux/static/css/main.c1ba2e12.css",
+    "main.js": "/notes-tsx-redux/static/js/main.02f0fae6.js",
+    "index.html": "/notes-tsx-redux/index.html",
+    "main.c1ba2e12.css.map": "/notes-tsx-redux/static/css/main.c1ba2e12.css.map",
+    "main.02f0fae6.js.map": "/notes-tsx-redux/static/js/main.02f0fae6.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c1ba2e12.css",
+    "static/js/main.02f0fae6.js"
+  ]
+}
