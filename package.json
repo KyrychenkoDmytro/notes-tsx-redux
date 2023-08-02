@@ -2,7 +2,6 @@
   "name": "task2",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://khardy-official.github.io/notes-tsx-redux",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
