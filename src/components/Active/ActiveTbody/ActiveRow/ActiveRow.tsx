@@ -1,11 +1,12 @@
 import { FC } from "react";
 import { Note } from "../../../../types/interfaces";
-import { useAppDispatch } from "../../../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/reduxHooks";
 import { deleteOneNote, archiveOneNote, editOneNote, toggleFormState, unarchiveOneNote } from "../../../../redux/reducers/notesSlice";
 
 const ActiveRow: FC<Note> = (props) => {
     const { id, name, imgUrl, created, category, content, dates, isActiveCategory } = props;
     const dispatch = useAppDispatch();
+    const { isActiveForm } = useAppSelector(state => state.notes);
 
     const editHandler = () => {
         dispatch(editOneNote(id));
@@ -14,7 +15,7 @@ const ActiveRow: FC<Note> = (props) => {
     }
 
     return (
-        <tr className={isActiveCategory? "ActiveNotesTable__body-row createdNote" : "ActiveNotesTable__body-row createdNote archiveNote"} data-note-id={id}>
+        <tr className={isActiveCategory ? "ActiveNotesTable__body-row createdNote" : "ActiveNotesTable__body-row createdNote archiveNote"} data-note-id={id}>
             <td>
                 <div className="ActiveNotesTable__body-name">
                     <div><img src={imgUrl} alt={category} /></div>
@@ -29,34 +30,37 @@ const ActiveRow: FC<Note> = (props) => {
                 {
                     isActiveCategory ? (
                         <div className="ActiveNotesTable__body-wrapper-icons">
-                    <button
-                        className="ActiveNotesTable__body-icons-edit"
-                        id="editNote"
-                        onClick={editHandler}
-                    >
-                        <img src="./assets/icons/edit.svg" alt="edit" />
-                    </button>
-                    <button
-                        onClick={() => dispatch(archiveOneNote(id))}
-                        className="ActiveNotesTable__body-icons-archive"
-                        id="archiveNote"
-                    >
-                        <img src="./assets/icons/archive.svg" alt="archive" />
-                    </button>
-                    <button
-                        onClick={() => dispatch(deleteOneNote(id))}
-                        className="ActiveNotesTable__body-icons-delete"
-                        id="deleteNote"
-                    >
-                        <img src="./assets/icons/delete.svg" alt="delete" />
-                    </button>
-                </div>
+                            <button
+                                className="ActiveNotesTable__body-icons-edit"
+                                id="editNote"
+                                onClick={editHandler}
+                                disabled={isActiveForm}
+                            >
+                                <img src="./assets/icons/edit.svg" alt="edit" />
+                            </button>
+                            <button
+                                onClick={() => dispatch(archiveOneNote(id))}
+                                className="ActiveNotesTable__body-icons-archive"
+                                id="archiveNote"
+                                disabled={isActiveForm}
+                            >
+                                <img src="./assets/icons/archive.svg" alt="archive" />
+                            </button>
+                            <button
+                                onClick={() => dispatch(deleteOneNote(id))}
+                                className="ActiveNotesTable__body-icons-delete"
+                                id="deleteNote"
+                                disabled={isActiveForm}
+                            >
+                                <img src="./assets/icons/delete.svg" alt="delete" />
+                            </button>
+                        </div>
                     ) : (
-                        <button 
-                        className="unArchiveNote"
-                         data-unarchive-id={id}
-                         onClick={() => dispatch(unarchiveOneNote(id))}
-                         >Unarchive</button>
+                        <button
+                            className="unArchiveNote"
+                            data-unarchive-id={id}
+                            onClick={() => dispatch(unarchiveOneNote(id))}
+                        >Unarchive</button>
                     )
                 }
             </td>

@@ -169,6 +169,9 @@ form {
       cursor: pointer;
       background-color: transparent;
       border: none;
+      &:disabled {
+        opacity: .5;
+      }
     }
   }
 }
