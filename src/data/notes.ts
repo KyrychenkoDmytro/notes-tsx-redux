@@ -70,30 +70,3 @@ export let notes = [
         archived: true,
     }
 ];
-
-export const getNotes = () => notes;
-export const findOneNote = (findId) => notes.find((note) => Number(note.id) === Number(findId));
-export const addNewNote = (newNote) => (notes = [...notes, newNote]);
-export const updateOneNote = (editId, newNote) => {
-    console.log(notes);
-    removeOneNote(editId);
-    console.log(notes);
-    addNewNote(newNote);
-    console.log(notes);
-};
-export const removeOneNote = (id) => (notes = [...notes.filter((note) => Number(note.id) !== Number(id))]);
-export const archiveOneNote = (id) => {
-    const note = notes.find((note) => Number(note.id) === Number(id));
-    if (note) {
-        note.archived = true;
-    }
-};
-export const unarchiveOneNote = (id) => {
-    const note = notes.find((note) => Number(note.id) === Number(id));
-    if (note) {
-        note.archived = false;
-    }
-};
-export const archiveAllNotes = () => notes.map((note) => (note.archived = true));
-export const deleteAllNotes = () => (notes = []);
-export const findObjectsWithCategoryAndArchived = (category) => notes.filter(note => note.category === category && note.archived === true);

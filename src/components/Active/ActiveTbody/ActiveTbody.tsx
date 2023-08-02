@@ -10,7 +10,7 @@ const ActiveTbody: FC = () => {
             <tbody className="ActiveNotesTable__body">
                 {
                     activeNotes.map((item) => (
-                        <ActiveRow key={item.id} {...item} />
+                        <ActiveRow key={item.id} {...item} isActiveCategory={true}/>
                     ))
                 }
                 <ActiveForm />

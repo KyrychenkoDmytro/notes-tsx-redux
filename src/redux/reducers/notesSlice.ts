@@ -1,8 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Note, NumberOfNotesByCategory } from '../../types/interfaces';
+import { Note, ArchivedNotesByCategory, NumberOfNotesByCategory } from '../../types/interfaces';
 
 const getActiveNotes = (state: NotesSliceState) => {
     state.activeNotes = state.data.filter(item => !item.archived);
+};
+
+const updateArchivedNotesByCategory = (state: NotesSliceState) => {
+    state.archivedNotesByCategory = state.data.reduce((archiveObj: ArchivedNotesByCategory, note) => {
+        if (note.archived) {
+            if (!archiveObj[note.category]) {
+                archiveObj[note.category] = [];
+            }
+            archiveObj[note.category].push(note);
+        }
+        return archiveObj;
+    }, {})
 };
 
 const calcCategoryCounts = (state: NotesSliceState) => {
@@ -29,15 +41,18 @@ const findNextId = (state: NotesSliceState) => {
 interface NotesSliceState {
     data: Note[];
     activeNotes: Note[];
+    archivedNotesByCategory: ArchivedNotesByCategory;
     categoryCounts: NumberOfNotesByCategory;
     isActiveForm: boolean;
     nextId: number;
     editableNote: Note | null;
+
 }
 
 const initialState: NotesSliceState = {
     data: [],
     activeNotes: [],
+    archivedNotesByCategory: {},
     categoryCounts: {},
     isActiveForm: false,
     nextId: 0,
@@ -52,6 +67,7 @@ export const notesSlice = createSlice({
             state.data = action.payload;
 
             getActiveNotes(state);
+            updateArchivedNotesByCategory(state);
             calcCategoryCounts(state);
             findNextId(state);
         },
@@ -59,6 +75,7 @@ export const notesSlice = createSlice({
             state.data = [];
 
             getActiveNotes(state);
+            updateArchivedNotesByCategory(state);
             calcCategoryCounts(state);
             findNextId(state);
         },
@@ -69,12 +86,14 @@ export const notesSlice = createSlice({
             });
 
             getActiveNotes(state);
+            updateArchivedNotesByCategory(state);
             calcCategoryCounts(state);
         },
         createOneNote: (state, action: PayloadAction<Note>) => {
             state.data = [...state.data, action.payload];
 
             getActiveNotes(state);
+            updateArchivedNotesByCategory(state);
             calcCategoryCounts(state);
             findNextId(state);
         },
@@ -82,6 +101,7 @@ export const notesSlice = createSlice({
             state.data = [...state.data.filter((note) => note.id !== action.payload)];
 
             getActiveNotes(state);
+            updateArchivedNotesByCategory(state);
             calcCategoryCounts(state);
             findNextId(state);
         },
@@ -93,6 +113,18 @@ export const notesSlice = createSlice({
             }
 
             getActiveNotes(state);
+            updateArchivedNotesByCategory(state);
+            calcCategoryCounts(state);
+        },
+        unarchiveOneNote: (state, action: PayloadAction<number>) => {
+            const note = state.data.find((note) => note.id === action.payload);
+            if (note) {
+                note.archived = false;
+                state.data = [...state.data];
+            }
+
+            getActiveNotes(state);
+            updateArchivedNotesByCategory(state);
             calcCategoryCounts(state);
         },
         editOneNote: (state, action: PayloadAction<number>) => {
@@ -109,6 +141,6 @@ export const notesSlice = createSlice({
     }
 })
 
-export const { setNotes, deleteAllNotes, archiveAllNotes, createOneNote, deleteOneNote, archiveOneNote, toggleFormState, editOneNote } = notesSlice.actions;
+export const { setNotes, deleteAllNotes, archiveAllNotes, createOneNote, deleteOneNote, archiveOneNote, unarchiveOneNote, toggleFormState, editOneNote } = notesSlice.actions;
 
 export default notesSlice.reducer;

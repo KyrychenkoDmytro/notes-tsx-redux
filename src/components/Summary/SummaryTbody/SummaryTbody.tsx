@@ -8,7 +8,13 @@ const SummaryTbody: FC = () => {
     return (
         <tbody className="SummaryNotesTable__body">
             {Object.entries(categoryCounts).map(([category, data]) => (
-                <SummaryRow key={category} category={category} total={data.total} archived={data.archived} imgUrl={data.imgUrl} />
+                <SummaryRow
+                    key={category}
+                    category={category}
+                    total={data.total}
+                    archived={data.archived}
+                    imgUrl={data.imgUrl}
+                />
             ))}
         </tbody>
     )

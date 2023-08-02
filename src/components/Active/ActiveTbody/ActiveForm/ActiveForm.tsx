@@ -12,14 +12,6 @@ const ActiveForm = () => {
     const [content, setContent] = useState(editableNote?.content || '');
     const dispatch = useAppDispatch();
 
-    // const formatDate = (dateString: string, isDates: boolean) => {
-    //     const date = new Date(dateString);
-    //     const year = date.getFullYear();
-    //     const month = String(date.getMonth() + 1).padStart(2, '0');
-    //     const day = String(date.getDate()).padStart(2, '0');
-    //     return isDates ? `${day}/${month}/${year}` : `${year}-${month}-${day}`;
-    // };
-
     const formatDate = (dateString: string, isDates: boolean) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
@@ -56,8 +48,6 @@ const ActiveForm = () => {
         let isRepeatData: boolean = false;
         dates?.forEach((item) => {
             if (item === formatDate(date, true)) {
-                console.log('item: ', item)
-                console.log('date: ', formatDate(date, true))
                 isRepeatData = true;
             }
         })

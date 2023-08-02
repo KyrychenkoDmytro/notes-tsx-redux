@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Note } from "../../../../types/interfaces";
 import { useAppDispatch } from "../../../../hooks/reduxHooks";
-import { deleteOneNote, archiveOneNote, editOneNote, toggleFormState } from "../../../../redux/reducers/notesSlice";
+import { deleteOneNote, archiveOneNote, editOneNote, toggleFormState, unarchiveOneNote } from "../../../../redux/reducers/notesSlice";
 
 const ActiveRow: FC<Note> = (props) => {
-    const { id, name, imgUrl, created, category, content, dates } = props;
+    const { id, name, imgUrl, created, category, content, dates, isActiveCategory } = props;
     const dispatch = useAppDispatch();
 
     const editHandler = () => {
@@ -14,7 +14,7 @@ const ActiveRow: FC<Note> = (props) => {
     }
 
     return (
-        <tr className="ActiveNotesTable__body-row createdNote" data-note-id={id}>
+        <tr className={isActiveCategory? "ActiveNotesTable__body-row createdNote" : "ActiveNotesTable__body-row createdNote archiveNote"} data-note-id={id}>
             <td>
                 <div className="ActiveNotesTable__body-name">
                     <div><img src={imgUrl} alt={category} /></div>
@@ -26,7 +26,9 @@ const ActiveRow: FC<Note> = (props) => {
             <td>{content}</td>
             <td>{dates && dates.length > 1 ? dates.join(', ') : ''}</td>
             <td>
-                <div className="ActiveNotesTable__body-wrapper-icons">
+                {
+                    isActiveCategory ? (
+                        <div className="ActiveNotesTable__body-wrapper-icons">
                     <button
                         className="ActiveNotesTable__body-icons-edit"
                         id="editNote"
@@ -49,6 +51,14 @@ const ActiveRow: FC<Note> = (props) => {
                         <img src="./assets/icons/delete.svg" alt="delete" />
                     </button>
                 </div>
+                    ) : (
+                        <button 
+                        className="unArchiveNote"
+                         data-unarchive-id={id}
+                         onClick={() => dispatch(unarchiveOneNote(id))}
+                         >Unarchive</button>
+                    )
+                }
             </td>
         </tr>
     )
