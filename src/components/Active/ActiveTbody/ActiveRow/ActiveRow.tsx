@@ -24,7 +24,7 @@ const ActiveRow: FC<Note> = (props) => {
             <td>{created}</td>
             <td>{category}</td>
             <td>{content}</td>
-            <td>{dates}</td>
+            <td>{dates && dates.length > 1 ? dates.join(', ') : ''}</td>
             <td>
                 <div className="ActiveNotesTable__body-wrapper-icons">
                     <button

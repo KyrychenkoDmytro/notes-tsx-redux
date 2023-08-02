@@ -4,7 +4,7 @@ export interface Note {
     created: string;
     category: string;
     content: string;
-    dates: string;
+    dates: string[] | null;
     imgUrl: string;
     archived: boolean;
 }

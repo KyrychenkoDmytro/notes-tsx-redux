@@ -7,17 +7,35 @@ const ActiveForm = () => {
     const { isActiveForm, nextId, editableNote } = useAppSelector(state => state.notes);
     const [name, setName] = useState(editableNote?.name || '');
     const [date, setDate] = useState(editableNote?.created || '');
-    // const [dates, setDates] = useState(editableNote?.dates || ['']);
+    const [dates, setDates] = useState(editableNote?.dates || null);
     const [category, setCategory] = useState(editableNote?.category || 'Task');
     const [content, setContent] = useState(editableNote?.content || '');
     const dispatch = useAppDispatch();
 
-    const formatDate = (dateString: string) => {
+    // const formatDate = (dateString: string, isDates: boolean) => {
+    //     const date = new Date(dateString);
+    //     const year = date.getFullYear();
+    //     const month = String(date.getMonth() + 1).padStart(2, '0');
+    //     const day = String(date.getDate()).padStart(2, '0');
+    //     return isDates ? `${day}/${month}/${year}` : `${year}-${month}-${day}`;
+    // };
+
+    const formatDate = (dateString: string, isDates: boolean) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
+    
+        if (isDates) {
+            return `${day}/${month}/${year}`;
+        } else {
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const monthText = months[date.getMonth()];
+            return `${monthText} ${day}, ${year}`;
+        }
     };
 
     const handleFormClose = () => {
@@ -32,19 +50,26 @@ const ActiveForm = () => {
         setContent('');
     }
 
-    // console.log(dates);
-
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        let isRepeatData: boolean = false;
+        dates?.forEach((item) => {
+            if (item === formatDate(date, true)) {
+                console.log('item: ', item)
+                console.log('date: ', formatDate(date, true))
+                isRepeatData = true;
+            }
+        })
 
         const newNote = {
             id: editableNote ? editableNote.id : nextId,
             imgUrl: images.filter((img) => img.imgName === category)[0]?.imgUrl || '',
             name,
-            created: formatDate(date),
+            created: formatDate(date, false),
             category,
             content,
-            dates: editableNote ? editableNote.dates : '',
+            dates: isRepeatData ? dates : dates !== null ? [...dates, formatDate(date, true)] : [formatDate(date, true)],
             archived: false,
         };
 
@@ -60,15 +85,14 @@ const ActiveForm = () => {
     useEffect(() => {
         if (editableNote) {
             setName(editableNote.name);
-            setDate(formatDate(editableNote.created));
+            setDate(formatDate(editableNote.created, false));
             setCategory(editableNote.category);
             setContent(editableNote.content);
-            // let datesArray = editableNote.dates.split(', ');
-            // let newDatesFormat: string[] = [];
-            // if(datesArray.length > 0) {
-            //     newDatesFormat = datesArray.map(item=> formatDate(item))
-            // }
-            // setDates([...newDatesFormat, formatDate(editableNote.created)]);
+            if (editableNote.dates === null) {
+                setDates([formatDate(editableNote.created, true)])
+            } else {
+                setDates(editableNote.dates);
+            }
         }
     }, [editableNote]);
 

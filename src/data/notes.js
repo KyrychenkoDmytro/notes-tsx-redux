@@ -6,7 +6,7 @@ export let notes = [
         created: 'April 20, 2021',
         category: 'Task',
         content: 'Tomatoes, bread',
-        dates: '',
+        dates: null,
         archived: false,
     },
     {
@@ -16,7 +16,7 @@ export let notes = [
         created: 'April 27, 2021',
         category: 'Random Thought',
         content: 'The evolution...',
-        dates: '',
+        dates: null,
         archived: false,
     },
     {
@@ -26,7 +26,7 @@ export let notes = [
         created: 'May 05, 2021',
         category: 'Idea',
         content: 'Implement new...',
-        dates: '3/5/2021, 5/5/2021',
+        dates: ['3/5/2021', '5/5/2021'],
         archived: false,
     },
     {
@@ -36,7 +36,7 @@ export let notes = [
         created: 'May 07, 2021',
         category: 'Idea',
         content: 'Power does not co...',
-        dates: '',
+        dates: null,
         archived: false,
     },
     {
@@ -46,7 +46,7 @@ export let notes = [
         created: 'May 15, 2021',
         category: 'Task',
         content: 'The Lean Startup',
-        dates: '',
+        dates: null,
         archived: false,
     },
     {
@@ -56,7 +56,7 @@ export let notes = [
         created: 'April 12, 2021',
         category: 'Task',
         content: 'Event loop is',
-        dates: '',
+        dates: null,
         archived: true,
     },
     {
@@ -66,7 +66,7 @@ export let notes = [
         created: 'April 15, 2021',
         category: 'Random Thought',
         content: 'Library or framework',
-        dates: '3/5/2021',
+        dates: ['3/5/2021'],
         archived: true,
     }
 ];
