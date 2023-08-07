@@ -1,3 +1,4 @@
+import './ActiveNotesTable.scss';
 import { FC } from "react";
 import ActiveThead from "../../components/Active/ActiveThead/ActiveThead";
 import ActiveTbody from "../../components/Active/ActiveTbody/ActiveTbody";

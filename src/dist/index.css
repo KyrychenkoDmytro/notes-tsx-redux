@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+/* @import './scss/style.scss'; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  @apply mr-0 p-0 box-border;
+}
+
+body {
+  @apply text-left;
+}
+
+/* body {
+          @apply text-2xl font-medium text-gray-600
+} */

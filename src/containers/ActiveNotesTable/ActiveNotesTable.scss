@@ -1,0 +1,124 @@
+.ActiveNotesTable,
+.SummaryNotesTable {
+  &__header {
+    @apply text-white;
+
+    &-wrapper-icons {
+      @apply flex justify-end items-center gap-1.5;
+    }
+
+    &-icons-archive-all,
+    &-icons-delete-all {
+      @apply flex justify-center items-center w-9 h-9 cursor-pointer bg-transparent border-none;
+    }
+
+
+    th {
+      @apply bg-table-header;
+
+      &:first-child {
+        @apply rounded-l-lg;
+      }
+
+      &:last-child {
+        @apply rounded-r-lg;
+      }
+    }
+  }
+
+  &__body {
+    &-row {
+      td {
+        @apply bg-table-row;
+
+        &:first-child {
+          @apply rounded-l-lg;
+        }
+
+        &:last-child {
+          @apply rounded-r-lg;
+        }
+      }
+    }
+
+    &-form {
+      @apply rounded-xl;
+
+      &-name,
+      &-date,
+      &-category,
+      &-text {
+        @apply py-2 px-3 rounded-xl text-18;
+      }
+
+      &-name {
+        @apply min-w-260;
+      }
+
+      &-submit {
+        @apply py-2 px-4 text-18 font-semibold text-slate-700 bg-gray-100 border-slate-600 border-2 rounded-lg cursor-pointer;
+      }
+
+      &-close {
+        @apply px-4 py-2 rounded-xl text-2xl font-semibold text-slate-700 bg-gray-100 border-slate-600 border-2 cursor-pointer;
+      }
+    }
+
+    &-name {
+      @apply flex justify-start items-center gap-1.5;
+
+      div {
+        @apply flex justify-center items-center flex-0-0-42px h-10 bg-icon-task rounded-full;
+      }
+
+      span {
+        @apply max-w-220 text-ellipsis overflow-hidden whitespace-nowrap;
+      }
+    }
+
+    &-wrapper-icons {
+      @apply flex justify-end items-center gap-1.5;
+    }
+
+    &-icons-archive,
+    &-icons-edit,
+    &-icons-delete {
+      @apply flex justify-center items-center w-9 h-9 cursor-pointer bg-transparent border-none;
+
+      &:disabled {
+        @apply opacity-50;
+      }
+    }
+  }
+  &__td {
+    @apply text-center;
+  }
+}
+
+.create-new-note {
+  @apply block mt-0 mr-0 mb-10 ml-auto px-4 py-2 border-2 text-slate-700 font-semibold bg-gray-200 border-slate-600 text-22 rounded-md cursor-pointer;
+}
+
+.unSummaryNote {
+  @apply px-3 py-6 rounded-md text-18 cursor-pointer;
+}
+
+.show-notes {
+  @apply cursor-pointer;
+}
+
+.archiveNote {
+
+  td {
+    @apply bg-archived;
+
+    &:first-child {
+      @apply pl-24;
+    }
+  }
+
+}
+
+.unArchiveNote {
+  @apply py-2 px-4 border-2 text-slate-700 font-semibold bg-gray-100 border-slate-600 text-18 rounded-md cursor-pointer;
+}
